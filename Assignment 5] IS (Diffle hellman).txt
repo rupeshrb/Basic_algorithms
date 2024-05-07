@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diffie-Hellman Key Exchange</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/big-integer/1.6.48/biginteger.js"></script>
 </head>
 <body>
     <h1>Diffie-Hellman Key Exchange</h1>
@@ -27,32 +26,36 @@
 
     <script>
         function generatePublicKey() {
-            var prime = document.getElementById("prime").value;
-            var base = document.getElementById("base").value;
-            var secretA = document.getElementById("secretA").value;
+            var prime = BigInt(document.getElementById("prime").value);
+            var base = BigInt(document.getElementById("base").value);
+            var secretA = BigInt(document.getElementById("secretA").value);
 
-            var p = bigInt(prime);
-            var g = bigInt(base);
-            var a = bigInt(secretA);
-
-            var A = g.modPow(a, p);
+            var A = bigIntModPow(base, secretA, prime);
             document.getElementById("publicKeyA").value = A.toString();
         }
 
         function calculateSharedSecret() {
-            var prime = document.getElementById("prime").value;
-            var publicKeyB = document.getElementById("publicKeyB").value;
-            var secretA = document.getElementById("secretA").value;
+            var prime = BigInt(document.getElementById("prime").value);
+            var publicKeyB = BigInt(document.getElementById("publicKeyB").value);
+            var secretA = BigInt(document.getElementById("secretA").value);
 
-            var p = bigInt(prime);
-            var B = bigInt(publicKeyB);
-            var a = bigInt(secretA);
-
-            var sharedSecret = B.modPow(a, p);
+            var sharedSecret = bigIntModPow(publicKeyB, secretA, prime);
             document.getElementById("sharedSecret").value = sharedSecret.toString();
+        }
+
+        // Custom modPow function since BigInt doesn't have built-in modPow
+        function bigIntModPow(base, exponent, modulus) {
+            let result = BigInt(1);
+            base = base % modulus;
+            while (exponent > 0) {
+                if (exponent % BigInt(2) === BigInt(1)) {
+                    result = (result * base) % modulus;
+                }
+                exponent = exponent / BigInt(2);
+                base = (base * base) % modulus;
+            }
+            return result;
         }
     </script>
 </body>
-</html>
-
 </html>
