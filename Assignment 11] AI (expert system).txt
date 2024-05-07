@@ -1,0 +1,40 @@
+class InformationExpertSystem:
+    def __init__(self):
+        self.knowledge_base = {}  # Dictionary to store knowledge base
+
+    def add_rule(self, question, answer):
+        self.knowledge_base[question] = answer
+
+    def get_answer(self, question):
+        if question in self.knowledge_base:
+            return self.knowledge_base[question]
+        else:
+            return "I don't have enough information to answer that."
+
+    def start_system(self):
+        print("Welcome to the Information Expert System!")
+        print("You can ask questions about various topics.")
+
+        while True:
+            user_input = input("Enter your question (or 'quit' to exit): ").strip().lower()
+            if user_input == 'quit':
+                print("Exiting the Information Expert System.")
+                break
+            else:
+                answer = self.get_answer(user_input)
+                print("Answer:", answer)
+
+
+# Example usage:
+info_system = InformationExpertSystem()
+
+# Adding rules to the knowledge base
+info_system.add_rule("what is the capital of france?", "Paris")
+info_system.add_rule("what is the capital of germany?", "Berlin")
+info_system.add_rule("what is the capital of italy?", "Rome")
+info_system.add_rule("what is the capital of spain?", "Madrid")
+info_system.add_rule("who is the president of the United States?", "Joe Biden")
+info_system.add_rule("what is the population of China?", "Approximately 1.4 billion")
+
+# Starting the expert system
+info_system.start_system()
